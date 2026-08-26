@@ -1,15 +1,8 @@
 /** TODO: check if this is needed, or should be part of global-dev shame */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: 'Material Icons Outlined';
-  font-style: normal;
-  font-weight: 400;
-  /** Font Family 'Material Icons Outlined' should be 'material-icons-outlined' - The Plugin-Kind Icon for 'editor', 'menu', 'validator' depends on it. */
-  src: url('icons/material-icons-outlined-v109-latin-regular.woff2') format('woff2');
-}
+
 
 .material-icons {
-  font-family: 'Material Icons Outlined';
+  font-family: 'Material Symbols Outlined';
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
