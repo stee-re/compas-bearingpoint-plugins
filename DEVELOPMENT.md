@@ -2,13 +2,15 @@
 
 ## Start Scripts
 
-Three modes are available — all require WireMock running in parallel.
+`preview:plugins-hub-prod` now fetches providers live from the
+[`oscd-plugins-registry`](https://github.com/OMICRONEnergyOSS/oscd-plugins-registry)
+GitHub Pages URL — no WireMock needed for that mode.
 
 | Script | Hot Reload | Realism | Providers |
 |--------|-----------|---------|-----------|
-| `npm run run:plugins-hub` | Auto | Low | `providers.dev.json` |
-| `npm run preview:plugins-hub` | Manual | Medium | `providers.dev.json` |
-| `npm run preview:plugins-hub-prod` | Manual | High | `providers.json` (production) |
+| `npm run run:plugins-hub` | Auto | Low | `providers.dev.json` (WireMock) |
+| `npm run preview:plugins-hub` | Manual | Medium | `providers.dev.json` (WireMock) |
+| `npm run preview:plugins-hub-prod` | Manual | High | live `oscd-plugins-registry` (network) |
 
 > **run** = fastest dev loop. **preview-prod** = closest to production behavior.
 

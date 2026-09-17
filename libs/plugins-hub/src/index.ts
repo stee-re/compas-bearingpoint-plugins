@@ -22,6 +22,12 @@ export { loadProvider, loadAllProviders } from './lib/services/provider-loader';
 export type { ProviderLoadResult } from './lib/services/provider-loader';
 
 export {
+  loadProvidersRegistry,
+  PROVIDERS_REGISTRY_URL,
+} from './lib/services/providers-registry-loader';
+export type { ProvidersRegistryLoadResult } from './lib/services/providers-registry-loader';
+
+export {
   loadBuiltinProviders,
   mapOfficialPluginToManifest,
 } from './lib/services/builtin-plugin-loader';
@@ -74,10 +80,14 @@ export {
 } from './lib/dom/open-scd-helpers';
 export type { HostEdition, OpenScdHost } from './lib/dom/open-scd-helpers';
 
-import { default as providersConfigProd } from './lib/config/providers.json';
+
 import { default as providersConfigDev } from './lib/config/providers.dev.json';
 
-
+/**
+ * Local WireMock provider stubs used only in development (`npm run
+ * run:plugins-hub` / `preview:plugins-hub`). Production always fetches
+ * providers from `loadProvidersRegistry()` / `PROVIDERS_REGISTRY_URL` instead.
+ */
 const isDev = (import.meta.env.MODE === 'development');
-const providersConfig = isDev ? providersConfigDev : providersConfigProd;
+const providersConfig = isDev ? providersConfigDev : undefined;
 export { providersConfig };

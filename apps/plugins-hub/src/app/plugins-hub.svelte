@@ -10,6 +10,7 @@
     markPluginsOverlappingBuiltins,
     loadStoredPlugins,
     providersConfig,
+    loadProvidersRegistry,
     installPlugin,
     uninstallPlugin,
     activatePlugin,
@@ -48,7 +49,9 @@
   let kindFilter = $state<'all' | PluginKind>('all');
   let eventTarget: HTMLDivElement;
 
-  const remoteProviders: Provider[] = providersConfig as Provider[];
+  const remoteProviders: Provider[] = import.meta.env.DEV
+    ? (providersConfig as Provider[])
+    : [];
 
   async function initHub() {
     loading = true;
@@ -63,7 +66,21 @@
       allPlugins.push(...result.plugins);
     }
 
-    const results = await loadAllProviders(remoteProviders);
+    // Production always fetches the canonical providers registry at runtime;
+    // dev/preview modes use the local WireMock provider stubs instead.
+    let providersToLoad = remoteProviders;
+    if (!import.meta.env.DEV) {
+      const registryResult = await loadProvidersRegistry();
+      if (registryResult.error) {
+        loadErrors = [
+          ...loadErrors,
+          `Error loading providers registry: ${registryResult.error}`,
+        ];
+      }
+      providersToLoad = registryResult.providers;
+    }
+
+    const results = await loadAllProviders(providersToLoad);
     for (const result of results) {
       if (result.error) {
         loadErrors = [

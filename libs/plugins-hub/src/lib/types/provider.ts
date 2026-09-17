@@ -1,14 +1,15 @@
 /**
  * How the provider's plugin list is obtained.
- * - remote: fetch pluginsUrl (default for providers.json entries)
+ * - remote: fetch pluginsUrl (default for providers registry entries)
  * - builtin: host officialPlugins via dynamic import of plugins.js
  */
 export type ProviderSource = 'remote' | 'builtin';
 
 /**
  * Represents a plugin provider in the federated registry.
- * Remote providers are listed in providers.json; builtin providers are
- * discovered at runtime from the host's officialPlugins module.
+ * Remote providers are listed in the providers registry
+ * (see `loadProvidersRegistry` / `PROVIDERS_REGISTRY_URL`); builtin providers
+ * are discovered at runtime from the host's officialPlugins module.
  */
 export interface Provider {
   /**
