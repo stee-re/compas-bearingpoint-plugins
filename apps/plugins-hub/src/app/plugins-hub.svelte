@@ -432,7 +432,9 @@
   }
 
   .hub-header {
-    display: flex;
+    /* Redundant with the host app's own top bar - hidden rather than
+       removed so hub-title/markup stays available if ever needed again. */
+    display: none;
     align-items: center;
     justify-content: space-between;
     background: var(--bearingpoint-color-primary);
