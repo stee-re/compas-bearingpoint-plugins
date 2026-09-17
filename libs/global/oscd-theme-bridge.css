@@ -47,27 +47,40 @@
   --bearingpoint-color-warning-text: var(--oscd-on-warning);
   --bearingpoint-color-warning-bg: var(--oscd-warning);
 
-  --bearingpoint-color-action-primary-text: var(--oscd-on-primary-adaptive);
-  --bearingpoint-color-action-primary-bg: var(--oscd-primary-adaptive);
+  /* Adaptive vars are only ever assigned inside the @container shims below,
+     for hosts that predate the --oscd-on-primary convention; on hosts that
+     don't set --oscd-on-primary they're undefined, so fall back to the
+     host's real --oscd-primary/--oscd-secondary + guaranteed-contrasting text. */
+  --bearingpoint-color-action-primary-text: var(
+    --oscd-on-primary-adaptive,
+    var(--oscd-on-primary, var(--oscd-paper))
+  );
+  --bearingpoint-color-action-primary-bg: var(--oscd-primary-adaptive, var(--oscd-primary));
   --bearingpoint-color-action-primary-bg-hover: color-mix(
     in oklab,
-    var(--oscd-primary-adaptive) 80%,
+    var(--oscd-primary-adaptive, var(--oscd-primary)) 80%,
     var(--bearingpoint-color-surface)
   );
 
-  --bearingpoint-color-action-secondary-text: var(--oscd-on-secondary-adaptive);
-  --bearingpoint-color-action-secondary-bg: var(--oscd-secondary-adaptive);
+  --bearingpoint-color-action-secondary-text: var(
+    --oscd-on-secondary-adaptive,
+    var(--oscd-on-secondary, var(--oscd-paper))
+  );
+  --bearingpoint-color-action-secondary-bg: var(--oscd-secondary-adaptive, var(--oscd-secondary));
   --bearingpoint-color-action-secondary-bg-hover: color-mix(
     in oklab,
-    var(--oscd-secondary-adaptive) 80%,
+    var(--oscd-secondary-adaptive, var(--oscd-secondary)) 80%,
     var(--bearingpoint-color-surface)
   );
 
-  --bearingpoint-color-action-neutral-text: var(--oscd-secondary-adaptive);
-  --bearingpoint-color-action-neutral-bg: var(--oscd-on-secondary-adaptive);
+  --bearingpoint-color-action-neutral-text: var(--oscd-secondary-adaptive, var(--oscd-secondary));
+  --bearingpoint-color-action-neutral-bg: var(
+    --oscd-on-secondary-adaptive,
+    var(--oscd-on-secondary, var(--oscd-paper))
+  );
   --bearingpoint-color-action-neutral-bg-hover: color-mix(
     in oklab,
-    var(--oscd-on-secondary-adaptive) 80%,
+    var(--oscd-on-secondary-adaptive, var(--oscd-on-secondary, var(--oscd-paper))) 80%,
     var(--bearingpoint-color-surface)
   );
 
@@ -91,8 +104,13 @@
   /* ------- END Semantic --bearingpoint-* aliases (component CSS keeps these names) ------- */
 }
 
-/* old Open-SCD didn't set the --oscd-on-primary value and others => missing values must be faked. */
-@container style(--oscd-on-primary: initial) {
+/* Universal palette/extreme-color fallbacks. These are plain constants (not
+   host-adaptive derivations), so they're guarded on their own absence rather
+   than tied to the --oscd-primary detection below - modern hosts (like
+   @omicronenergy/oscd-shell) never set --oscd-white/--oscd-paper/etc. either,
+   and buttons/badges throughout plugins-hub (e.g. .badge's color-mix with
+   --oscd-white) need these regardless of whether --oscd-primary is set. */
+@container style(--oscd-white: initial) {
   * {
     /* ========== Gray-Skala (form '--oscd-base*' Light-Mode) ========== */
     --oscd-gray-10: var(--oscd-base3, #fdf6e3); /* lightest */
@@ -122,7 +140,26 @@
     /* ========== Paper / Ink (only Light-Mode) ========== */
     --oscd-paper: #ffffff;
     --oscd-ink:   #000000;
-    
+
+    /* ========== modern Semantic-Colors ========== */
+    --oscd-error:   #ff3d47;
+    --oscd-on-error: var(--oscd-gray-90);
+    --oscd-warning: #ffcc17;
+    --oscd-on-warning: var(--oscd-gray-90);
+    --oscd-success: #239c5b;
+    --oscd-on-success: var(--oscd-gray-90);
+  }
+}
+
+/* Hosts that don't set --oscd-on-primary (and others) need those values faked.
+   Guarded also on --oscd-primary being unset: hosts such as
+   @omicronenergy/oscd-shell set --oscd-primary correctly but simply never
+   set --oscd-on-primary; without this extra check this block would
+   incorrectly re-derive --oscd-primary from the --oscd-theme-primary/
+   --primary names (both unset on those hosts), clobbering the host's real,
+   valid primary color with a guaranteed-invalid one. */
+@container style(--oscd-on-primary: initial) and style(--oscd-primary: initial) {
+  * {
     /* ========== Semantic Contrast-Colors (Light-Mode) ========== */
     --oscd-primary: var(--oscd-theme-primary, var(--primary));
     --oscd-on-primary:   var(--oscd-gray-20);
@@ -132,14 +169,6 @@
     --oscd-on-primary-adaptive: var(--oscd-on-primary);
     --oscd-secondary-adaptive: var(--oscd-secondary);
     --oscd-on-secondary-adaptive: var(--oscd-on-secondary);
-
-    /* ========== modern Semantic-Colors ========== */
-    --oscd-error:   #ff3d47;
-    --oscd-on-error: var(--oscd-gray-90);
-    --oscd-warning: #ffcc17;
-    --oscd-on-warning: var(--oscd-gray-90);
-    --oscd-success: #239c5b;
-    --oscd-on-success: var(--oscd-gray-90);
   }
 }
 
