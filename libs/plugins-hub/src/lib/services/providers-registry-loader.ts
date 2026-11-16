@@ -3,10 +3,10 @@ import type { Provider } from '../types/provider';
 /**
  * Canonical, always-up-to-date registry of remote plugin providers, published
  * as a static JSON file from the `oscd-plugins-registry` repo via GitHub Pages.
- * @see https://github.com/OMICRONEnergyOSS/oscd-plugins-registry
+ * @see https://github.com/openscd/oscd-plugins-registry
  */
 export const PROVIDERS_REGISTRY_URL =
-  'https://omicronenergyoss.github.io/oscd-plugins-registry/providers.json';
+  'https://openscd.github.io/oscd-plugins-registry/providers.json';
 
 /** Result of loading the providers registry. */
 export interface ProvidersRegistryLoadResult {
