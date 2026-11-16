@@ -9842,7 +9842,7 @@ function Dc(n) {
   const e = n;
   return typeof e.name == "string" && (!e.author || typeof e.author == "string") && typeof e.src == "string" && (!1 || e.src.startsWith("https://") || e.src.startsWith("/")) && typeof e.kind == "string" && typeof e.icon == "string" && typeof e.description == "string" && (e.supportedCoreVersion === void 0 || typeof e.supportedCoreVersion == "object" && e.supportedCoreVersion !== null && (typeof e.supportedCoreVersion.from == "string" || typeof e.supportedCoreVersion.to == "string"));
 }
-const Rc = "https://omicronenergyoss.github.io/oscd-plugins-registry/providers.json";
+const Rc = "https://openscd.github.io/oscd-plugins-registry/providers.json";
 async function _c(n = Rc) {
   try {
     const e = await fetch(n);
